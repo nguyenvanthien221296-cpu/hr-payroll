@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Payroll Pro - Chấm Công, Tính Lương 3P & Quyết Toán Thuế TNCN</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS Style -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon">👑</div>
+                <div class="logo-text">
+                    <h1>HR Payroll Pro</h1>
+                    <span>Hệ thống Lương 3P</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="#dashboard" class="menu-item active" data-target="dashboard">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Tổng quan</span>
+                </a>
+                <a href="#employees" class="menu-item" data-target="employees">
+                    <i data-lucide="users"></i>
+                    <span>Nhân sự</span>
+                </a>
+                <a href="#attendance" class="menu-item" data-target="attendance">
+                    <i data-lucide="calendar"></i>
+                    <span>Chấm công</span>
+                </a>
+                <a href="#leave" class="menu-item" data-target="leave">
+                    <i data-lucide="file-text"></i>
+                    <span>Nghỉ phép & Online</span>
+                </a>
+                <a href="#payroll" class="menu-item" data-target="payroll" id="menu-payroll-parent">
+                    <i data-lucide="banknote"></i>
+                    <span>Tính lương 3P</span>
+                </a>
+                <div class="sidebar-submenu" id="payroll-submenu">
+                    <a href="#payroll-kpi" class="submenu-item" data-subtarget="kpi">
+                        <i data-lucide="clipboard-list"></i>
+                        <span>1. Lương KPI (P3.1)</span>
+                    </a>
+                    <a href="#payroll-sales" class="submenu-item" data-subtarget="sales">
+                        <i data-lucide="badge-dollar-sign"></i>
+                        <span>2. Lương Doanh Số (P3.2)</span>
+                    </a>
+                    <a href="#payroll-consolidated" class="submenu-item" data-subtarget="consolidated">
+                        <i data-lucide="gem"></i>
+                        <span>3. Lương Tổng Hợp (3P)</span>
+                    </a>
+                </div>
+                <a href="#reports" class="menu-item" data-target="reports">
+                    <i data-lucide="bar-chart-3"></i>
+                    <span>Báo cáo & Quyết toán</span>
+                </a>
+                <a href="#audit-log" class="menu-item" data-target="audit-log">
+                    <i data-lucide="history"></i>
+                    <span>Nhật ký hệ thống</span>
+                </a>
+                <a href="#settings" class="menu-item" data-target="settings">
+                    <i data-lucide="settings"></i>
+                    <span>Cấu hình</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <p>© 2026 HR Payroll Pro 3P</p>
+                <span>Phiên bản v3.1.0</span>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-title">
+                    <h2 id="page-title">Tổng quan hệ thống</h2>
+                    <p id="page-subtitle">Thống kê và hoạt động hôm nay</p>
+                </div>
+                <div class="header-actions">
+                    <div class="current-date">
+                        <i data-lucide="calendar-days"></i>
+                        <span id="header-date">29/05/2026</span>
+                    </div>
+                    <div class="user-profile">
+                        <div class="avatar">HR</div>
+                        <div class="user-info">
+                            <span class="user-name">Admin Pro 3P</span>
+                            <span class="user-role">Giám đốc nhân sự</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dynamic Views Container -->
+            <div class="content-view" id="content-view">
+                
+                <!-- VIEW 1: DASHBOARD -->
+                <section id="view-dashboard" class="view-section active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon purple"><i data-lucide="users"></i></div>
+                            <div class="stat-details">
+                                <h3>Tổng nhân sự</h3>
+                                <span class="stat-value" id="dash-total-employees">0</span>
+                                <span class="stat-desc">Đang hoạt động trong hệ thống</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon green"><i data-lucide="check-circle-2"></i></div>
+                            <div class="stat-details">
+                                <h3>Đi làm hôm nay</h3>
+                                <span class="stat-value" id="dash-attendance-today">0</span>
+                                <span class="stat-desc">Đã điểm danh chấm công</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon orange"><i data-lucide="user-x"></i></div>
+                            <div class="stat-details">
+                                <h3>Nghỉ phép hôm nay</h3>
+                                <span class="stat-value" id="dash-leave-today">0</span>
+                                <span class="stat-desc">Có đơn xin nghỉ được duyệt</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon blue"><i data-lucide="coins"></i></div>
+                            <div class="stat-details">
+                                <h3>Tổng quỹ lương tháng</h3>
+                                <span class="stat-value" id="dash-total-payroll">0 đ</span>
+                                <span class="stat-desc">Thực lĩnh chuyển khoản dự kiến</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card chart-card">
+                            <h3>Thống kê nhân sự & Đi làm</h3>
+                            <div class="chart-container">
+                                <canvas id="dashboardChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="dashboard-card activity-card">
+                            <h3>Hoạt động gần đây</h3>
+                            <div class="activity-timeline" id="dashboard-recent-activities">
+                                <p class="empty-state">Không có hoạt động gần đây.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 2: EMPLOYEES -->
+                <section id="view-employees" class="view-section">
+                    <div class="action-bar">
+                        <div class="search-box">
+                            <i data-lucide="search"></i>
+                            <input type="text" id="employee-search" placeholder="Tìm tên, mã NV, CCCD...">
+                        </div>
+                        <div class="filter-box">
+                            <select id="employee-dept-filter">
+                                <option value="">Tất cả phòng ban</option>
+                            </select>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary" id="btn-import-employees-trigger">
+                                <i data-lucide="file-up"></i> Nhập từ Excel
+                            </button>
+                            <input type="file" id="excel-employees-file" accept=".xlsx, .xls" style="display: none;">
+                            <button class="btn btn-primary" id="btn-add-employee">
+                                <i data-lucide="user-plus"></i> Thêm nhân viên
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-container large-table">
+                        <table class="data-table" id="table-employees">
+                            <thead>
+                                <tr>
+                                    <th>Mã NV</th>
+                                    <th>CCCD</th>
+                                    <th>Họ & Tên</th>
+                                    <th>Phòng ban</th>
+                                    <th>Chức vụ</th>
+                                    <th>Lương cơ bản</th>
+                                    <th>Lương đóng BH</th>
+                                    <th>Giảm trừ (NPT)</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Load dynamic -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- VIEW 3: ATTENDANCE -->
+                <section id="view-attendance" class="view-section">
+                    <div class="action-bar">
+                        <div class="date-picker-box">
+                            <label for="attendance-month">Chọn tháng:</label>
+                            <input type="month" id="attendance-month" value="2026-05">
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary" id="btn-download-attendance-template">
+                                <i data-lucide="download"></i> Tải file Excel mẫu
+                            </button>
+                            <button class="btn btn-secondary" id="btn-import-attendance-trigger">
+                                <i data-lucide="file-up"></i> Nhập công từ Excel
+                            </button>
+                            <input type="file" id="excel-attendance-file" accept=".xlsx, .xls" style="display: none;">
+                            <button class="btn btn-primary" id="btn-add-attendance">
+                                <i data-lucide="plus"></i> Thêm dòng chấm công
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table" id="table-attendance">
+                            <thead>
+                                <tr>
+                                    <th>Mã NV</th>
+                                    <th>Họ & Tên</th>
+                                    <th>Ngày</th>
+                                    <th>Giờ vào</th>
+                                    <th>Giờ ra</th>
+                                    <th>Số giờ</th>
+                                    <th>Giờ OT</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Load dynamic -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- VIEW 4: LEAVE -->
+                <section id="view-leave" class="view-section">
+                    <div class="action-bar">
+                        <div class="date-picker-box">
+                            <label for="leave-month">Chọn tháng:</label>
+                            <input type="month" id="leave-month" value="2026-05">
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary" id="btn-download-leave-template">
+                                <i data-lucide="download"></i> Tải file Excel mẫu
+                            </button>
+                            <button class="btn btn-secondary" id="btn-import-leave-trigger">
+                                <i data-lucide="file-up"></i> Nhập đơn từ Excel
+                            </button>
+                            <input type="file" id="excel-leave-file" accept=".xlsx, .xls" style="display: none;">
+                            <button class="btn btn-primary" id="btn-add-leave">
+                                <i data-lucide="plus-circle"></i> Đăng ký đơn
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table" id="table-leave">
+                            <thead>
+                                <tr>
+                                    <th>Mã NV</th>
+                                    <th>Họ & Tên</th>
+                                    <th>Loại đơn</th>
+                                    <th>Từ ngày</th>
+                                    <th>Đến ngày</th>
+                                    <th>Lý do</th>
+                                    <th>Trạng thái</th>
+                                    <th>Người duyệt</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Load dynamic -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- VIEW 5.1: KPI PAYROLL VIEW -->
+                <section id="view-payroll-kpi" class="view-section">
+                    <div class="action-bar" style="position: sticky; top: 0; z-index: 10; margin-bottom: 2rem;">
+                        <div class="date-picker-box">
+                            <label for="payroll-month-kpi"><strong>Tháng tính lương:</strong></label>
+                            <input type="month" id="payroll-month-kpi" value="2026-05" class="payroll-month-picker">
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary btn-calculate-payroll-trigger">
+                                <i data-lucide="refresh-cw"></i> Tính toán lại
+                            </button>
+                            <button class="btn btn-primary btn-export-payroll-trigger" data-type="kpi">
+                                <i data-lucide="file-spreadsheet"></i> Xuất Bảng Lương KPI Excel
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(108, 92, 231, 0.04); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+                        <p style="font-size:12px; color: var(--text-muted);">💡 **Nhập liệu nhanh:** Điểm KPI (0 - 150) cho phép nhấp đúp hoặc gõ trực tiếp trên bảng tính. Lương KPI thực nhận sẽ tự động chạy theo điểm số.</p>
+                    </div>
+                    <div class="table-container large-table">
+                        <table class="data-table" id="table-payroll-kpi">
+                            <thead>
+                                <tr>
+                                    <th>Mã NV</th>
+                                    <th>Họ & Tên</th>
+                                    <th>Phòng ban</th>
+                                    <th>Chức vụ</th>
+                                    <th>Lương KPI mục tiêu (VND)</th>
+                                    <th style="background: rgba(108, 92, 231, 0.15); color: #fff;">Điểm KPI thực tế (0 - 150)</th>
+                                    <th>Hệ số hoàn thành (%)</th>
+                                    <th>Lương KPI thực nhận (VND)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic KPI calculations -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- VIEW 5.2: SALES COMMISSION VIEW -->
+                <section id="view-payroll-sales" class="view-section">
+                    <div class="action-bar" style="position: sticky; top: 0; z-index: 10; margin-bottom: 2rem;">
+                        <div class="date-picker-box">
+                            <label for="payroll-month-sales"><strong>Tháng tính lương:</strong></label>
+                            <input type="month" id="payroll-month-sales" value="2026-05" class="payroll-month-picker">
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary btn-calculate-payroll-trigger">
+                                <i data-lucide="refresh-cw"></i> Tính toán lại
+                            </button>
+                            <button class="btn btn-primary btn-export-payroll-trigger" data-type="sales">
+                                <i data-lucide="file-spreadsheet"></i> Xuất Bảng Hoa Hồng Sales Excel
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(9, 132, 227, 0.04); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+                        <p style="font-size:12px; color: var(--text-muted);">💡 **Nhập liệu nhanh:** Nhập trực tiếp Doanh thu thực đạt của nhân viên kinh doanh Sales. Hoa hồng lũy tiến (1%, 2.5%, 4%) được tự động áp dụng.</p>
+                    </div>
+                    <div class="table-container large-table">
+                        <table class="data-table" id="table-payroll-sales">
+                            <thead>
+                                <tr>
+                                    <th>Mã NV</th>
+                                    <th>Họ & Tên</th>
+                                    <th>Phòng ban</th>
+                                    <th>Chức vụ</th>
+                                    <th>Chỉ tiêu tối thiểu (Target)</th>
+                                    <th style="background: rgba(9, 132, 227, 0.15); color: #fff;">Doanh thu thực đạt (VND)</th>
+                                    <th>Tỷ lệ hoa hồng (%)</th>
+                                    <th>Lương doanh số thực nhận (VND)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic Sales commission calculations -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- VIEW 5.3: CONSOLIDATED PAYROLL VIEW -->
+                <section id="view-payroll-consolidated" class="view-section">
+                    <div class="action-bar" style="position: sticky; top: 0; z-index: 10; margin-bottom: 2rem;">
+                        <div class="date-picker-box">
+                            <label for="payroll-month-cons"><strong>Tháng tính lương:</strong></label>
+                            <input type="month" id="payroll-month-cons" value="2026-05" class="payroll-month-picker">
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary btn-calculate-payroll-trigger">
+                                <i data-lucide="refresh-cw"></i> Tính toán lại toàn bộ
+                            </button>
+                            <button class="btn btn-primary btn-export-payroll-trigger" data-type="consolidated">
+                                <i data-lucide="file-spreadsheet"></i> Xuất Bảng Lương Tổng Hợp Excel
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(46, 204, 113, 0.04); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+                        <p style="font-size:12px; color: var(--text-muted);">💡 **Công thức 3P gộp:** Tự động kết nối P1 (Cơ bản) + P2 (Phụ cấp năng lực) + P3 (Lương KPI và Hoa hồng Sales được tổng hợp tự động theo tỷ lệ trọng số cấu hình).</p>
+                    </div>
+                    <div class="table-container large-table">
+                        <table class="data-table" id="table-payroll">
+                            <thead id="header-payroll-table">
+                                <!-- Generated Dynamically -->
+                            </thead>
+                            <tbody>
+                                <!-- Load dynamic -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- VIEW 6: REPORTS & FINALIZATION -->
+                <section id="view-reports" class="view-section">
+                    <div class="tab-group" style="display:flex; gap:10px; margin-bottom:20px; border-bottom:1px solid var(--border-color); padding-bottom:10px;">
+                        <button class="btn btn-primary" id="btn-tab-charts">📊 Biểu đồ thống kê</button>
+                        <button class="btn btn-secondary" id="btn-tab-pit-finalization">💰 Quyết toán Thuế TNCN Năm</button>
+                    </div>
+
+                    <!-- SUB-VIEW 6.1: CHARTS -->
+                    <div id="subview-charts" class="report-subview active">
+                        <div class="reports-grid" style="margin-bottom: 24px;">
+                            <div class="dashboard-card report-card">
+                                <h3>Hiệu suất KPI trung bình theo Phòng ban (%)</h3>
+                                <div class="chart-container">
+                                    <canvas id="deptKPIChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="dashboard-card report-card">
+                                <h3>Doanh thu kinh doanh phòng Sales (VND)</h3>
+                                <div class="chart-container">
+                                    <canvas id="salesRevenueChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="reports-grid">
+                            <div class="dashboard-card report-card">
+                                <h3>Báo cáo quỹ lương thực nhận theo phòng ban</h3>
+                                <div class="chart-container">
+                                    <canvas id="deptSalaryChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="dashboard-card report-card">
+                                <h3>Tỷ lệ phân bổ nghỉ phép theo loại</h3>
+                                <div class="chart-container">
+                                    <canvas id="leavePieChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="reports-list-container" style="margin-top: 2rem;">
+                            <div class="dashboard-card">
+                                <h3>Xuất file báo cáo tổng hợp hệ thống 3P</h3>
+                                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Kết xuất toàn bộ dữ liệu hệ thống lương 3P gồm Danh sách nhân sự, Bảng chấm công, Đơn xin phép, Bảng điểm KPI riêng, Bảng doanh thu Sales riêng và Bảng lương tổng hợp tự động của tháng tương ứng ra một tệp Excel nhiều Sheet chuyên nghiệp.</p>
+                                <div class="date-picker-box" style="margin-bottom: 1.5rem;">
+                                    <label for="report-month">Tháng báo cáo:</label>
+                                    <input type="month" id="report-month" value="2026-05" class="styled-input">
+                                </div>
+                                <button class="btn btn-primary" id="btn-export-full-report">
+                                    <i data-lucide="download-cloud"></i> Xuất trọn bộ báo cáo tháng (.xlsx)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUB-VIEW 6.2: PIT FINALIZATION -->
+                    <div id="subview-pit-finalization" class="report-subview" style="display:none;">
+                        <div class="dashboard-card">
+                            <h3>Báo cáo và Quyết toán Thuế Thu nhập Cá nhân (Năm)</h3>
+                            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Quyết toán tổng hợp gộp cả năm của nhân viên. Tự động tính gộp lũy tiến cả năm và đối chiếu với số thuế TNCN đã khấu trừ hàng tháng để xác định phần thừa/thiếu.</p>
+                            
+                            <div class="action-bar" style="background: none; border: none; padding: 0; margin-bottom: 1.5rem; justify-content: flex-start; gap: 20px;">
+                                <div class="date-picker-box">
+                                    <label for="finalization-year">Chọn năm quyết toán:</label>
+                                    <input type="number" id="finalization-year" value="2026" min="2020" max="2035" style="width: 100px;">
+                                </div>
+                                <button class="btn btn-primary" id="btn-calculate-finalization">
+                                    <i data-lucide="calculator"></i> Bắt đầu tính quyết toán
+                                </button>
+                                <button class="btn btn-secondary" id="btn-export-finalization-excel">
+                                    <i data-lucide="file-spreadsheet"></i> Xuất bảng quyết toán ra Excel
+                                </button>
+                            </div>
+
+                            <div class="table-container large-table">
+                                <table class="data-table" id="table-pit-finalization">
+                                    <thead>
+                                        <tr>
+                                            <th>Mã NV</th>
+                                            <th>CCCD</th>
+                                            <th>Họ & Tên</th>
+                                            <th>Thu nhập chịu thuế cả năm</th>
+                                            <th>Thu nhập miễn thuế (OT)</th>
+                                            <th>Bảo hiểm bắt buộc cả năm</th>
+                                            <th>Giảm trừ gia cảnh</th>
+                                            <th>Thu nhập tính thuế</th>
+                                            <th>Thuế gộp cả năm</th>
+                                            <th>Thuế đã khấu trừ tháng</th>
+                                            <th>Thuế thừa/thiếu</th>
+                                            <th>Trạng thái</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Dynamic PIT Finalization Data -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 7: SETTINGS -->
+                <section id="view-settings" class="view-section">
+                    <div class="settings-container">
+                        
+                        <!-- CARD 7.1: LOW-CODE SALARY 3P STRUCTURE BUILDER (THIẾT LẬP CƠ CẤU LƯƠNG LINH HOẠT) -->
+                        <div class="settings-card">
+                            <h3>Cấu hình Cấu trúc Lương 3P theo Phòng ban (Low-Code Builder)</h3>
+                            <p style="color: var(--text-muted); font-size:12px; margin-bottom:1.5rem;">Cấu hình linh hoạt cơ cấu tính lương cho từng bộ phận trong công ty bằng các thanh công cụ đơn giản. Bảng tính lương sẽ tự động điều chỉnh theo cấu trúc thiết lập dưới đây.</p>
+                            
+                            <div class="table-container" style="margin-bottom:1.5rem;">
+                                <table class="data-table" id="table-salary-structures">
+                                    <thead>
+                                        <tr>
+                                            <th>Phòng ban</th>
+                                            <th>Lương cơ bản (P1)</th>
+                                            <th>Bật Lương KPI</th>
+                                            <th>Lương KPI mục tiêu (P3.1)</th>
+                                            <th>Bật Doanh số Sales</th>
+                                            <th>Trọng số phân chia P3 (%)</th>
+                                            <th>Xem công thức tính</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Rendered Dynamically for low-code setups -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Card 7.2: Ngày công & Giờ làm việc -->
+                        <div class="settings-card">
+                            <h3>Cấu hình ngày công & Giờ làm việc</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="set-standard-days">Số ngày công chuẩn/tháng</label>
+                                    <input type="number" id="set-standard-days" value="26">
+                                </div>
+                                <div class="form-group">
+                                    <label for="set-standard-hours">Số giờ làm chuẩn/ngày</label>
+                                    <input type="number" id="set-standard-hours" value="8">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 7.3: Hệ số làm thêm giờ -->
+                        <div class="settings-card">
+                            <h3>Cấu hình hệ số OT (Làm thêm giờ)</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="set-ot-normal">Hệ số ngày thường (T2-T7)</label>
+                                    <input type="number" step="0.1" id="set-ot-normal" value="1.5">
+                                </div>
+                                <div class="form-group">
+                                    <label for="set-ot-weekend">Hệ số ngày nghỉ tuần (Chủ nhật)</label>
+                                    <input type="number" step="0.1" id="set-ot-weekend" value="2.0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="set-ot-holiday">Hệ số ngày Lễ, Tết</label>
+                                    <input type="number" step="0.1" id="set-ot-holiday" value="3.0">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 7.4: Mức đóng bảo hiểm & Giảm trừ gia cảnh chuẩn VN -->
+                        <div class="settings-card">
+                            <h3>Mức trích bảo hiểm & Giảm trừ gia cảnh thuế TNCN</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="set-ins-social">Bảo hiểm xã hội (BHXH %)</label>
+                                    <input type="number" step="0.1" id="set-ins-social" value="8">
+                                </div>
+                                <div class="form-group">
+                                    <label for="set-ins-health">Bảo hiểm y tế (BHYT %)</label>
+                                    <input type="number" step="0.1" id="set-ins-health" value="1.5">
+                                </div>
+                                <div class="form-group">
+                                    <label for="set-ins-unemp">Bảo hiểm thất nghiệp (BHTN %)</label>
+                                    <input type="number" step="0.1" id="set-ins-unemp" value="1">
+                                </div>
+                                <div class="form-group">
+                                    <label for="set-pit-self">Giảm trừ bản thân (VND/tháng)</label>
+                                    <input type="number" id="set-pit-self" value="11000000">
+                                </div>
+                                <div class="form-group">
+                                    <label for="set-pit-dep">Giảm trừ người phụ thuộc (VND/người/tháng)</label>
+                                    <input type="number" id="set-pit-dep" value="4400000">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 7.5: QUẢN LÝ CÁC CỘT PHỤ CẤP / LƯƠNG ĐỘNG -->
+                        <div class="settings-card">
+                            <h3>Cấu hình Cột Lương & Phụ cấp tùy chỉnh động</h3>
+                            <p style="color: var(--text-muted); font-size:12px; margin-bottom:1.5rem;">Thiết lập các cột lương bổ sung đặc thù của công ty. Form nhân viên và Bảng lương sẽ tự động sinh thêm cột tương ứng.</p>
+                            
+                            <div class="table-container" style="margin-bottom: 1.5rem;">
+                                <table class="data-table" id="table-custom-columns">
+                                    <thead>
+                                        <tr>
+                                            <th>Tên cột</th>
+                                            <th>Loại cột</th>
+                                            <th>Tính thuế TNCN</th>
+                                            <th>Tính đóng BHXH</th>
+                                            <th>Thao tác</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Loaded Dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Form thêm cột động mới -->
+                            <h4 style="font-size:13px; margin-bottom: 10px; color: var(--primary-color);">Tạo thêm cột mới</h4>
+                            <div class="form-grid" style="align-items:flex-end;">
+                                <div class="form-group">
+                                    <label for="col-new-name">Tên cột phụ cấp/lương *</label>
+                                    <input type="text" id="col-new-name" placeholder="Ví dụ: Phụ cấp trách nhiệm">
+                                </div>
+                                <div class="form-group">
+                                    <label for="col-new-type">Loại cột</label>
+                                    <select id="col-new-type">
+                                        <option value="allowance">Phụ cấp (Allowance)</option>
+                                        <option value="bonus">Thưởng (Bonus)</option>
+                                        <option value="deduction">Khấu trừ (Deduction)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="flex-direction:row; gap:10px; padding:10px 0;">
+                                    <label style="display:flex; align-items:center; gap:5px; cursor:pointer;">
+                                        <input type="checkbox" id="col-new-taxable" checked> Chịu thuế TNCN
+                                    </label>
+                                    <label style="display:flex; align-items:center; gap:5px; cursor:pointer;">
+                                        <input type="checkbox" id="col-new-insurance"> Tính đóng BHXH
+                                    </label>
+                                </div>
+                                <button class="btn btn-primary" id="btn-add-custom-column" style="height:38px;">
+                                    <i data-lucide="plus"></i> Thêm cột
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- CARD 7.6: HƯỚNG DẪN & GIẢI THÍCH CÔNG THỨC LƯƠNG 3P, BHXH, TNCN CHUYÊN SÂU -->
+                        <div class="settings-card" style="background: rgba(108, 92, 231, 0.03); border: 1px dashed rgba(108, 92, 231, 0.3);">
+                            <h3 style="color:#a855f7;"><i data-lucide="help-circle" style="display:inline-block; vertical-align:middle; margin-right:5px;"></i> Cẩm nang Kế toán: Công thức tính Lương 3P & Thuế TNCN/BHXH</h3>
+                            <div style="font-size:12px; line-height:1.6; color:var(--text-main); display:flex; flex-direction:column; gap:12px;">
+                                <p>Hệ thống tự động thực thi các công thức tính toán tiền lương theo đúng quy định hiện hành của Bộ luật Lao động và Luật Thuế Việt Nam:</p>
+                                
+                                <div>
+                                    <strong style="color:var(--info-color);">1. Cấu trúc Lương 3P tổng hợp:</strong>
+                                    <ul style="margin-left:20px; list-style-type:circle;">
+                                        <li><strong>P1 (Position):</strong> Lương cơ bản theo vị trí công việc.</li>
+                                        <li><strong>P2 (Person):</strong> Các khoản phụ cấp năng lực/đặc thù (phụ cấp trách nhiệm, đi lại, điện thoại...).</li>
+                                        <li><strong>P3 (Performance):</strong> Lương hiệu quả = <code style="background:rgba(0,0,0,0.3); padding:2px 4px; border-radius:4px; color:#fff;">Lương KPI thực nhận × Trọng số KPI + Lương Doanh số thực nhận × Trọng số Sales</code>.</li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <strong style="color:var(--success-color);">2. Lương hiệu năng KPI (P3.1) & Lương Doanh số (P3.2):</strong>
+                                    <ul style="margin-left:20px; list-style-type:circle;">
+                                        <li><strong>Lương KPI thực nhận:</strong> <code style="background:rgba(0,0,0,0.3); padding:2px 4px; border-radius:4px; color:#fff;">Lương KPI mục tiêu × (Điểm KPI thực tế / 100)</code>.</li>
+                                        <li><strong>Lương Doanh số thực nhận:</strong> <code style="background:rgba(0,0,0,0.3); padding:2px 4px; border-radius:4px; color:#fff;">Doanh số thực tế × Tỷ lệ hoa hồng (%)</code>. Hoa hồng tính bậc lũy tiến: dưới 50M là 1%, 50M-100M là 2.5%, trên 100M là 4%.</li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <strong style="color:var(--warning-color);">3. Quy chế trích đóng Bảo hiểm xã hội bắt buộc:</strong>
+                                    <p>Trích đóng của người lao động: <strong>10.5%</strong> (BHXH 8%, BHYT 1.5%, BHTN 1%).</p>
+                                    <p><strong>Trần đóng BHXH/YT:</strong> Giới hạn tối đa đóng bảo hiểm là 20 lần mức lương cơ sở (2.340.000đ) = <strong style="color:#fff;">46.800.000 đ</strong>. BHTN giới hạn tối đa = <strong style="color:#fff;">99.200.000 đ</strong>.</p>
+                                </div>
+
+                                <div>
+                                    <strong style="color:var(--danger-color);">4. Thuật toán khấu trừ Thuế TNCN lũy tiến:</strong>
+                                    <p><strong>Miễn thuế OT chênh lệch:</strong> Theo luật, phần lương OT trả thêm so với giờ thường được miễn thuế TNCN hoàn toàn (Hệ số tăng thêm 0.5 ngày thường, 1.0 chủ nhật). Hệ thống tự bóc tách phần miễn thuế này.</p>
+                                    <p><strong>Giảm trừ gia cảnh:</strong> Giảm trừ bản thân <strong style="color:#fff;">11.000.000 đ/tháng</strong>, giảm trừ người phụ thuộc <strong style="color:#fff;">4.400.000 đ/người/tháng</strong>.</p>
+                                    <p>Áp dụng biểu thuế lũy tiến 7 bậc trên Thu nhập tính thuế sau giảm trừ để tính số thuế phải nộp hàng tháng.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CARD 7.7: TRÌNH MÔ PHỎNG & CHẠY THỬ CÔNG THỨC LƯƠNG 3P & THUẾ TNCN (SANDBOX) -->
+                        <div class="settings-card" style="border: 1px solid rgba(168, 85, 247, 0.3);">
+                            <h3 style="color:#a855f7;"><i data-lucide="calculator" style="display:inline-block; vertical-align:middle; margin-right:5px;"></i> Trình Mô Phỏng & Chạy Thử Công Thức Lương 3P & Thuế TNCN (Kế toán Sandbox)</h3>
+                            <p style="color: var(--text-muted); font-size:12px; margin-bottom:1.5rem;">Nhập các thông số chạy thử nghiệm để phân rã và xem chi tiết công thức tính toán tiền lương, bảo hiểm bắt buộc và các bậc thuế TNCN thực tế theo đúng luật Việt Nam.</p>
+                            
+                            <div class="form-grid" style="margin-bottom: 1.5rem;">
+                                <div class="form-group">
+                                    <label for="sb-base-salary">Lương cơ bản P1 (VND)</label>
+                                    <input type="number" id="sb-base-salary" value="15000000" class="styled-input">
+                                </div>
+                                <div class="form-group">
+                                    <label for="sb-actual-days">Ngày công thực tế (Công/Chuẩn)</label>
+                                    <div style="display:flex; gap:10px; align-items:center;">
+                                        <input type="number" id="sb-actual-days" value="24" style="width:100%; box-sizing:border-box;">
+                                        <span>/</span>
+                                        <input type="number" id="sb-std-days" value="26" style="width:100%; box-sizing:border-box;">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="sb-kpi-target">Lương KPI mục tiêu (VND)</label>
+                                    <input type="number" id="sb-kpi-target" value="3000000">
+                                </div>
+                                <div class="form-group">
+                                    <label for="sb-kpi-score">Điểm KPI thực tế đạt (%)</label>
+                                    <input type="number" id="sb-kpi-score" value="95" min="0" max="150">
+                                </div>
+                                <div class="form-group">
+                                    <label for="sb-sales-revenue">Doanh thu Sales thực đạt (VND)</label>
+                                    <input type="number" id="sb-sales-revenue" value="80000000">
+                                </div>
+                                <div class="form-group">
+                                    <label for="sb-dependents">Số người phụ thuộc (Người)</label>
+                                    <input type="number" id="sb-dependents" value="1" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="sb-allowance">Phụ cấp P2 chịu thuế (VND)</label>
+                                    <input type="number" id="sb-allowance" value="1500000">
+                                </div>
+                                <div class="form-group">
+                                    <label for="sb-allowance-exempt">Phụ cấp P2 miễn thuế (VND)</label>
+                                    <input type="number" id="sb-allowance-exempt" value="730000">
+                                </div>
+                            </div>
+                            
+                            <div style="text-align: right; margin-bottom: 1.5rem;">
+                                <button class="btn btn-primary" id="btn-run-sandbox" type="button">
+                                    <i data-lucide="play-circle"></i> Chạy thử nghiệm công thức
+                                </button>
+                            </div>
+
+                            <div id="sandbox-results" style="display:none; background: rgba(19, 21, 38, 0.6); padding: 20px; border-radius: 8px; border: 1px solid var(--border-color);">
+                                <h4 style="color:#2ecc71; margin-bottom:15px; font-size:14px; display:flex; align-items:center; gap:8px;">
+                                    <i data-lucide="check-circle"></i> Kết quả phân tích & diễn giải từng bước:
+                                </h4>
+                                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; font-size:12px;">
+                                    <div>
+                                        <h5 style="color:var(--info-color); margin-bottom:10px; font-size:12px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:4px;">1. Tính toán Thu nhập & Lương 3P</h5>
+                                        <ul style="list-style:none; padding-left:0; display:flex; flex-direction:column; gap:8px;">
+                                            <li style="margin-bottom: 8px;">Lương theo công (P1): <span style="float:right; font-weight:600; color:#fff;" id="sb-res-p1">0 đ</span><br><small style="color:var(--text-muted);" id="sb-exp-p1">Công thức: ...</small></li>
+                                            <li style="margin-bottom: 8px;">Lương KPI thực lĩnh (P3.1): <span style="float:right; font-weight:600; color:#fff;" id="sb-res-p31">0 đ</span><br><small style="color:var(--text-muted);" id="sb-exp-p31">Công thức: ...</small></li>
+                                            <li style="margin-bottom: 8px;">Thưởng doanh số Sales (P3.2): <span style="float:right; font-weight:600; color:#fff;" id="sb-res-p32">0 đ</span><br><small style="color:var(--text-muted);" id="sb-exp-p32">Công thức: ...</small></li>
+                                            <li style="margin-bottom: 8px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">Tổng thu nhập Gross: <span style="float:right; font-weight:700; color:#fff;" id="sb-res-gross">0 đ</span></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h5 style="color:var(--danger-color); margin-bottom:10px; font-size:12px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:4px;">2. Thuế & Khấu trừ Bảo hiểm</h5>
+                                        <ul style="list-style:none; padding-left:0; display:flex; flex-direction:column; gap:8px;">
+                                            <li style="margin-bottom: 8px;">Khấu trừ BHXH (10.5%): <span style="float:right; font-weight:600; color:var(--danger-color);" id="sb-res-ins">0 đ</span><br><small style="color:var(--text-muted);" id="sb-exp-ins">Capping: ...</small></li>
+                                            <li style="margin-bottom: 8px;">Giảm trừ gia cảnh tổng: <span style="float:right; font-weight:600; color:var(--success-color);" id="sb-res-deduct">0 đ</span><br><small style="color:var(--text-muted);" id="sb-exp-deduct">11M bản thân + ...</small></li>
+                                            <li style="margin-bottom: 8px;">Thu nhập tính thuế TNCN: <span style="float:right; font-weight:600; color:#fff;" id="sb-res-taxable">0 đ</span></li>
+                                            <li style="margin-bottom: 8px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">Thuế TNCN phải nộp: <span style="float:right; font-weight:700; color:var(--warning-color);" id="sb-res-pit">0 đ</span><br><small style="color:var(--text-muted);" id="sb-exp-pit">Chi tiết bậc: ...</small></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div style="margin-top:20px; padding-top:15px; border-top:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between; align-items:center;">
+                                    <strong style="font-size:14px; color:#fff;">Thực lĩnh chuyển khoản cuối cùng (Net):</strong>
+                                    <span style="font-size:18px; font-weight:700; color:#2ecc71; background: rgba(46, 204, 113, 0.15); padding: 4px 12px; border-radius: 6px;" id="sb-res-net">0 đ</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-actions">
+                            <button class="btn btn-secondary" id="btn-reset-settings">Khôi phục mặc định</button>
+                            <button class="btn btn-primary" id="btn-save-settings">Lưu cấu hình</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 8: AUDIT LOGS -->
+                <section id="view-audit-log" class="view-section">
+                    <div class="action-bar">
+                        <div class="search-box">
+                            <i data-lucide="search"></i>
+                            <input type="text" id="audit-search" placeholder="Tìm kiếm nhật ký, hành động...">
+                        </div>
+                        <div class="filter-box" style="display:flex; gap:10px;">
+                            <select id="audit-category-filter">
+                                <option value="">Tất cả danh mục</option>
+                                <option value="system">Hệ thống</option>
+                                <option value="employee">Nhân sự</option>
+                                <option value="attendance">Chấm công</option>
+                                <option value="leave">Nghỉ phép & Online</option>
+                                <option value="payroll">Lương 3P</option>
+                                <option value="settings">Cấu hình</option>
+                                <option value="export">Xuất Excel</option>
+                            </select>
+                            <select id="audit-type-filter">
+                                <option value="">Tất cả trạng thái</option>
+                                <option value="success">Thành công (Success)</option>
+                                <option value="info">Thông tin (Info)</option>
+                                <option value="warning">Cảnh báo (Warning)</option>
+                                <option value="danger">Nguy hiểm (Danger)</option>
+                            </select>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-secondary" id="btn-export-audit-excel" style="background: rgba(46, 204, 113, 0.1); border-color: rgba(46, 204, 113, 0.2); color: #2ecc71;">
+                                <i data-lucide="file-spreadsheet"></i> Xuất Excel Logs (Max 5000)
+                            </button>
+                            <button class="btn btn-danger" id="btn-clear-audit">
+                                <i data-lucide="trash-2"></i> Xóa tất cả nhật ký
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(168, 85, 247, 0.04); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+                        <p style="font-size:12px; color: var(--text-muted);">💡 **Tối ưu hiệu năng**: Hệ thống tự động ghi nhận tối đa **5000 nhật ký hoạt động gần nhất**. Để giữ trang web tải tức thì, giao diện dưới đây sẽ chỉ vẽ **200 log mới nhất**; tính năng Xuất Excel sẽ tải về toàn bộ lịch sử 5000 log.</p>
+                    </div>
+
+                    <div class="table-container large-table">
+                        <table class="data-table" id="table-audit-log">
+                            <thead>
+                                <tr>
+                                    <th style="width: 180px;">Thời gian</th>
+                                    <th style="width: 140px;">Người thực hiện</th>
+                                    <th style="width: 140px;">Danh mục</th>
+                                    <th>Nội dung hoạt động</th>
+                                    <th style="width: 120px;">Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic audit logs -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL: ADD/EDIT EMPLOYEE -->
+    <div class="modal" id="modal-employee">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="employee-modal-title">Thêm nhân viên mới</h3>
+                <button class="close-btn" id="btn-close-employee-modal">&times;</button>
+            </div>
+            <form id="form-employee">
+                <input type="hidden" id="emp-id">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="emp-code">Mã nhân viên *</label>
+                        <input type="text" id="emp-code" required placeholder="Ví dụ: NV001">
+                    </div>
+                    <div class="form-group">
+                        <label for="emp-cccd">Mã số CCCD (12 chữ số) *</label>
+                        <input type="text" id="emp-cccd" required placeholder="Ví dụ: 037096001234">
+                    </div>
+                    <div class="form-group">
+                        <label for="emp-name">Họ và tên *</label>
+                        <input type="text" id="emp-name" required placeholder="Ví dụ: Nguyễn Văn A">
+                    </div>
+                    <div class="form-group">
+                        <label for="emp-dept">Phòng ban</label>
+                        <select id="emp-dept">
+                            <option value="Hành chính - Nhân sự">Hành chính - Nhân sự</option>
+                            <option value="Kinh doanh">Kinh doanh</option>
+                            <option value="Kỹ thuật - IT">Kỹ thuật - IT</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Kế toán">Kế toán</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="emp-position">Chức vụ</label>
+                        <input type="text" id="emp-position" placeholder="Ví dụ: Nhân viên, Trưởng phòng">
+                    </div>
+                    <div class="form-group">
+                        <label for="emp-salary">Lương cơ bản (VND) *</label>
+                        <input type="number" id="emp-salary" required placeholder="Ví dụ: 10000000">
+                    </div>
+                    <div class="form-group">
+                        <label for="emp-ins-salary">Lương đóng bảo hiểm (VND) - Để trống nếu bằng Lương cơ bản</label>
+                        <input type="number" id="emp-ins-salary" placeholder="Ví dụ: 5000000">
+                    </div>
+                    <div class="form-group">
+                        <label for="emp-dependents">Số người phụ thuộc (Giảm trừ gia cảnh)</label>
+                        <input type="number" id="emp-dependents" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="emp-start-date">Ngày bắt đầu làm việc</label>
+                        <input type="date" id="emp-start-date">
+                    </div>
+                    <div class="form-group">
+                        <label for="emp-bank-account">Tài khoản ngân hàng</label>
+                        <input type="text" id="emp-bank-account" placeholder="Số TK - Ngân hàng">
+                    </div>
+                    <div class="form-group">
+                        <label for="emp-status">Trạng thái</label>
+                        <select id="emp-status">
+                            <option value="active">Đang làm việc</option>
+                            <option value="inactive">Đã nghỉ việc</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Khu vực render ĐỘNG các trường phụ cấp/thu nhập tùy chỉnh -->
+                <h4 style="margin: 1.5rem 0 1rem 0; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; color: var(--primary-color);">Cấu hình các khoản phụ cấp / Thu nhập cố định mặc định</h4>
+                <div class="form-grid" id="container-dynamic-fields-employee">
+                    <!-- Loaded dynamically via js -->
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btn-cancel-employee">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Lưu thông tin</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: ADJUST MONTHLY INCOME (ĐIỀU CHỈNH THU NHẬP ĐỘT XUẤT THEO THÁNG) -->
+    <div class="modal" id="modal-adjustment">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Điều chỉnh thu nhập đột xuất theo tháng</h3>
+                <button class="close-btn" id="btn-close-adjustment-modal">&times;</button>
+            </div>
+            <form id="form-adjustment">
+                <input type="hidden" id="adj-emp-id">
+                <input type="hidden" id="adj-month">
+                <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; border:1px dashed var(--border-color); margin-bottom: 1.5rem;">
+                    <p style="font-size:13px; font-weight:600;" id="adj-title-emp-name">Nhân viên: Nguyễn Văn A (NV001)</p>
+                    <p style="font-size:11px; color:var(--text-muted);" id="adj-title-month">Áp dụng riêng biệt cho: Tháng 05/2026</p>
+                </div>
+                
+                <div class="form-grid" id="container-adjustment-fields">
+                    <!-- Generated Dynamically for Base Salary Override and Custom Columns Override -->
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btn-cancel-adjustment">Hủy điều chỉnh</button>
+                    <button type="submit" class="btn btn-primary">Lưu điều chỉnh tháng này</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD/EDIT ATTENDANCE -->
+    <div class="modal" id="modal-attendance">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="attendance-modal-title">Thêm bản ghi chấm công</h3>
+                <button class="close-btn" id="btn-close-attendance-modal">&times;</button>
+            </div>
+            <form id="form-attendance">
+                <input type="hidden" id="att-id">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="att-emp-id">Nhân viên *</label>
+                        <select id="att-emp-id" required>
+                            <!-- Load dynamic -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="att-date">Ngày chấm công *</label>
+                        <input type="date" id="att-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="att-checkin">Giờ vào</label>
+                        <input type="time" id="att-checkin" value="08:00">
+                    </div>
+                    <div class="form-group">
+                        <label for="att-checkout">Giờ ra</label>
+                        <input type="time" id="att-checkout" value="17:00">
+                    </div>
+                    <div class="form-group">
+                        <label for="att-ot-hours">Số giờ OT (Tự nhập hoặc tính từ giờ ra)</label>
+                        <input type="number" step="0.5" id="att-ot-hours" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="att-status">Trạng thái công</label>
+                        <select id="att-status">
+                            <option value="full">Đi làm đủ ngày</option>
+                            <option value="half">Đi làm nửa ngày</option>
+                            <option value="unpaid">Nghỉ không phép</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label for="att-note">Ghi chú</label>
+                    <input type="text" id="att-note" placeholder="Lý do đi trễ, làm thêm, ...">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btn-cancel-attendance">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD/EDIT LEAVE -->
+    <div class="modal" id="modal-leave">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="leave-modal-title">Đăng ký đơn xin phép</h3>
+                <button class="close-btn" id="btn-close-leave-modal">&times;</button>
+            </div>
+            <form id="form-leave">
+                <input type="hidden" id="leave-id">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="leave-emp-id">Nhân viên *</label>
+                        <select id="leave-emp-id" required>
+                            <!-- Load dynamic -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="leave-type">Loại đơn *</label>
+                        <select id="leave-type" required>
+                            <option value="annual_leave">Nghỉ phép năm (hưởng lương)</option>
+                            <option value="sick_leave">Nghỉ ốm (hưởng lương/BHXH)</option>
+                            <option value="unpaid_leave">Nghỉ không lương</option>
+                            <option value="remote_work">Làm online (remote)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="leave-start">Từ ngày *</label>
+                        <input type="date" id="leave-start" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="leave-end">Đến ngày (nếu nghỉ nhiều ngày) *</label>
+                        <input type="date" id="leave-end" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="leave-status">Trạng thái phê duyệt</label>
+                        <select id="leave-status">
+                            <option value="approved">Đã phê duyệt</option>
+                            <option value="pending">Chờ phê duyệt</option>
+                            <option value="rejected">Bị từ chối</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label style="display:flex; align-items:center; gap:5px; cursor:pointer;">
+                            <input type="checkbox" id="leave-approved" checked> Đã duyệt phép
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="leave-approved-by">Người duyệt</label>
+                        <input type="text" id="leave-approved-by" placeholder="Tên người phê duyệt">
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label for="leave-reason">Lý do *</label>
+                    <textarea id="leave-reason" required placeholder="Lý do nghỉ phép, làm việc tại nhà..." style="width:100%; min-height:80px; padding:0.5rem; background:rgba(255,255,255,0.05); border:1px solid var(--border-color); border-radius:6px; color:#fff; resize:none;"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btn-cancel-leave">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Gửi đơn</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SheetJS (Excel library) CDN -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    
+    <!-- ChartJS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- JS Files -->
+    <script src="js/utils.js"></script>
+    <script src="js/store.js"></script>
+    <script src="js/employees.js"></script>
+    <script src="js/attendance.js"></script>
+    <script src="js/leave.js"></script>
+    <script src="js/payroll.js"></script>
+    <script src="js/reports.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/audit.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
