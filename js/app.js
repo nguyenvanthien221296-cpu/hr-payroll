@@ -102,6 +102,32 @@ const App = {
                 PayrollModule.switchSubTab(subtarget);
             });
         });
+
+        // Mobile Hamburger & Overlay events
+        const btnToggle = document.getElementById('btn-mobile-menu-toggle');
+        const overlay = document.getElementById('sidebar-overlay');
+        const sidebar = document.querySelector('.sidebar');
+
+        if (btnToggle && overlay && sidebar) {
+            btnToggle.addEventListener('click', () => {
+                sidebar.classList.add('active');
+                overlay.classList.add('active');
+            });
+
+            overlay.addEventListener('click', () => {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+
+            // Tự động đóng sidebar trượt khi click chuyển trang trên điện thoại
+            const allNavLinks = document.querySelectorAll('.menu-item, .submenu-item');
+            allNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    sidebar.classList.remove('active');
+                    overlay.classList.remove('active');
+                });
+            });
+        }
     },
 
     handleNavigation(target) {

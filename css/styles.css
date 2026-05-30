@@ -953,4 +953,230 @@ input:checked + .slider-round:before {
     box-shadow: 0 0 8px rgba(108, 92, 231, 0.4);
 }
 
+/* ==========================================
+   MOBILE RESPONSIVE UI UPGRADE (v3.5.0)
+   ========================================== */
+
+/* Hamburger menu toggle button style */
+.mobile-menu-toggle {
+    display: none; /* Hidden by default on desktop */
+}
+
+/* Mobile sidebar overlay style */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 99;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Mobile & Tablet view styling (<= 768px) */
+@media (max-width: 768px) {
+    /* Hamburger toggle button */
+    .mobile-menu-toggle {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        background: var(--bg-glass);
+        border: 1px solid var(--border-glass);
+        color: #fff;
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-right: 10px;
+        flex-shrink: 0;
+    }
+    
+    .mobile-menu-toggle:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Sliding Sidebar Drawer */
+    .sidebar {
+        left: -260px;
+        box-shadow: none;
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .sidebar.active {
+        left: 0;
+        box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* Adapt main content size */
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 16px;
+    }
+    
+    /* Header layout */
+    .main-header {
+        justify-content: flex-start;
+        align-items: center;
+        gap: 8px;
+        padding-bottom: 16px;
+        margin-bottom: 16px;
+    }
+    
+    .header-title h2 {
+        font-size: 16px;
+    }
+    
+    .header-title p {
+        display: none; /* Hide subtitle to avoid crowd */
+    }
+    
+    .header-actions {
+        margin-left: auto; /* Align user date to far right */
+        gap: 8px;
+    }
+    
+    .current-date {
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+    
+    .user-info {
+        display: none; /* Hide employee role text on mobile */
+    }
+    
+    .avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+    
+    /* Action Bar Columnization */
+    .action-bar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 12px;
+        padding: 12px;
+    }
+    
+    .search-box {
+        max-width: 100%;
+    }
+    
+    .filter-box {
+        display: flex;
+        gap: 8px;
+    }
+    
+    .filter-box select {
+        flex-grow: 1;
+        width: 100%;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+        justify-content: stretch;
+    }
+    
+    .action-buttons .btn {
+        flex-grow: 1;
+        justify-content: center;
+        padding: 10px 14px;
+        font-size: 12px;
+    }
+    
+    /* Spacing & grid tweaks */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+    
+    .stat-card {
+        padding: 12px;
+        gap: 10px;
+    }
+    
+    .stat-icon {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .stat-icon i {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .stat-value {
+        font-size: 16px;
+    }
+    
+    .stat-desc {
+        display: none; /* Hide card descriptions */
+    }
+    
+    /* Tables touch scroll optimization */
+    .table-container {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .data-table th, .data-table td {
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+    
+    /* Modals padding & width responsiveness */
+    .modal-content {
+        max-width: 92%;
+        padding: 16px;
+        margin: 10px;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
+
+/* Mobile Screens (<= 480px) */
+@media (max-width: 480px) {
+    /* Simplify header actions */
+    .header-actions {
+        display: none; /* Completely hide header profile/date on small screens */
+    }
+    
+    /* Single Column Stats Grid */
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Stack action buttons vertically */
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    /* Expand table elements slightly to look better */
+    .editable-cell {
+        width: 90px;
+        padding: 4px 6px;
+        font-size: 12px;
+    }
+}
+
+
 
